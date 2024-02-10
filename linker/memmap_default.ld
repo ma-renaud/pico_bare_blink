@@ -3,11 +3,14 @@
     __exidx_start
     __exidx_end
     __etext
+    __rodata_start__
     __data_start__
     __preinit_array_start
     __preinit_array_end
+    __ctors_begin__
     __init_array_start
     __init_array_end
+    __ctors_end__
     __fini_array_start
     __fini_array_end
     __data_end__
@@ -15,9 +18,9 @@
     __bss_end__
     __end__
     end
-    __HeapLimit
-    __StackLimit
-    __StackTop
+    __heap_limit
+    __stack_limit
+    __stack_top
     __stack (== StackTop)
 */
 
@@ -29,7 +32,7 @@ MEMORY
     SCRATCH_Y(rwx) : ORIGIN = 0x20041000, LENGTH = 4k
 }
 
-ENTRY(_entry_point)
+/*ENTRY(_entry_point)*/
 
 SECTIONS
 {
@@ -60,7 +63,9 @@ SECTIONS
 
     .text : {
         __logical_binary_start = .;
-        KEEP (*(.vectors))
+        . = ALIGN(4);
+        KEEP (*(.isr_vectors))
+        . = ALIGN(4);
         KEEP (*(.binary_info_header))
         __binary_info_header_end = .;
         KEEP (*(.reset))
@@ -87,6 +92,7 @@ SECTIONS
         . = ALIGN(4);
     } > FLASH
 
+     __exidx_start = .;
     .rodata : {
         *(EXCLUDE_FILE(*libgcc.a: *libc.a:*lib_a-mem*.o *libm.a:) .rodata*)
         . = ALIGN(4);
@@ -106,6 +112,16 @@ SECTIONS
     } > FLASH
     __exidx_end = .;
 
+    .init_array :
+    {
+        __ctors_begin__ = .;
+        PROVIDE_HIDDEN (__init_array_start = .);
+        KEEP (*(SORT(.init_array.*)))
+        KEEP (*(.init_array*))
+        _ctors_end = .;
+        PROVIDE_HIDDEN (__init_array_end = _ctors_end);
+    } >FLASH
+
     /* Machine inspectable binary information */
     . = ALIGN(4);
     __binary_info_start = .;
@@ -120,9 +136,12 @@ SECTIONS
     /* End of .text-like segments */
     __etext = .;
 
-   .ram_vector_table (COPY): {
+    .ram_vector_table (COPY): {
         *(.ram_vector_table)
     } > RAM
+
+    /* used by the startup to initialize data */
+    __rodata_start__ = LOADADDR(.data);
 
     .data : {
         __data_start__ = .;
@@ -156,9 +175,11 @@ SECTIONS
 
         . = ALIGN(4);
         /* init data */
+        __ctors_begin__ = .;
         PROVIDE_HIDDEN (__init_array_start = .);
         KEEP(*(SORT(.init_array.*)))
         KEEP(*(.init_array))
+        __ctors_end__ = .;
         PROVIDE_HIDDEN (__init_array_end = .);
 
         . = ALIGN(4);
@@ -210,7 +231,7 @@ SECTIONS
         __end__ = .;
         end = __end__;
         *(.heap*)
-        __HeapLimit = .;
+        __heap_limit = .;
     } > RAM
 
     /* .stack*_dummy section doesn't contains any symbols. It is only
@@ -236,15 +257,15 @@ SECTIONS
     } > FLASH
 
     /* stack limit is poorly named, but historically is maximum heap ptr */
-    __StackLimit = ORIGIN(RAM) + LENGTH(RAM);
-    __StackOneTop = ORIGIN(SCRATCH_X) + LENGTH(SCRATCH_X);
-    __StackTop = ORIGIN(SCRATCH_Y) + LENGTH(SCRATCH_Y);
-    __StackOneBottom = __StackOneTop - SIZEOF(.stack1_dummy);
-    __StackBottom = __StackTop - SIZEOF(.stack_dummy);
-    PROVIDE(__stack = __StackTop);
+    __stack_limit = ORIGIN(RAM) + LENGTH(RAM);
+    __stack_one_top = ORIGIN(SCRATCH_X) + LENGTH(SCRATCH_X);
+    __stack_top = ORIGIN(SCRATCH_Y) + LENGTH(SCRATCH_Y);
+    __stack_one_bottom = __stack_one_top - SIZEOF(.stack1_dummy);
+    __stack_bottom = __stack_top - SIZEOF(.stack_dummy);
+    PROVIDE(__stack = __stack_top);
 
     /* Check if data + heap + stack exceeds RAM limit */
-    ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed")
+    ASSERT(__stack_limit >= __heap_limit, "region RAM overflowed")
 
     ASSERT( __binary_info_header_end - __logical_binary_start <= 256, "Binary info must be in first 256 bytes of the binary")
     /* todo assert on extra code */

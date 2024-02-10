@@ -19,6 +19,7 @@
 #include "m0plus.h"
 #include "addressmap.h"
 #include "sio.h"
+#include "defs.h"
 //#include "pico/binary_info/defs.h"
 
 #ifdef NDEBUG

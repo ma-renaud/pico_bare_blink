@@ -3,7 +3,7 @@
 // Copyright (c) 2019-2021 Raspberry Pi (Trading) Ltd.
 // SPDX-License-Identifier: BSD-3-Clause
 //
-// Device:      Winbond W25Q080
+// device:      Winbond W25Q080
 //              Also supports W25Q16JV (which has some different SR instructions)
 //              Also supports AT25SF081
 //              Also supports S25FL132K0

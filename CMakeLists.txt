@@ -16,29 +16,49 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
 endif()
 
 project(bare_blink C CXX ASM)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(pico_binary_info)
+set(${RP2040_CMSIS_INC_DIRECTORIES} "" CACHE INTERNAL "list of all cmsis directorys to include in project" FORCE)
+set(${RP2040_CMSIS_SOURCES} "" CACHE INTERNAL "list of all cmsis sources to include in project" FORCE)
+
+include(rp2040)
+string(REPLACE " " ";" RP2040_COMMON_COMPILE_FLAGS ${RP2040_COMMON_COMPILE_FLAGS})
+set(PROJECT_COMMON_COMPILE_FLAGS "${RP2040_COMMON_COMPILE_FLAGS}" CACHE STRING "" FORCE)
+
+add_subdirectory(cmsis)
 
 add_executable(${PROJECT_NAME}
+        ${RP2040_CMSIS_SOURCES}
         boot2/bs2_default_padded_checksummed.S
-        linker/crt0.S
-        bootrom.c
-        main.cpp
+        src/isr_vectors.cpp
+        src/startup.cpp
+        src/main.cpp
+)
+
+target_compile_options(${PROJECT_NAME} PUBLIC
+        ${PROJECT_COMMON_COMPILE_FLAGS}
 )
 
 # Make sure TinyUSB can find tusb_config.h
 target_include_directories(${PROJECT_NAME} PUBLIC
+        PRIVATE ${RP2040_CMSIS_INC_DIRECTORIES}
         ${CMAKE_CURRENT_LIST_DIR}/inc
         ${CMAKE_CURRENT_LIST_DIR})
 
 # pull in common dependencies
 target_link_libraries(${PROJECT_NAME}
-        pico_binary_info
+        ${PROJECT_COMMON_COMPILE_FLAGS}
         -L"${CMAKE_SOURCE_DIR}/linker"
         -T"memmap_default.ld"
-        -Wl,--print-memory-usage)
+        -nostartfiles
+        --specs=nano.specs
+        --specs=nosys.specs
+        -Wl,--gc-sections
+        -Wl,--print-memory-usage
+        -Wl,-Map=${PROJECT_NAME}.map)
+
+#set the standards use by this target.
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+target_compile_features(${PROJECT_NAME} PUBLIC c_std_11)
 
 add_compile_options(-Wall
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int

@@ -150,7 +150,7 @@ static __always_inline void *rom_func_lookup_inline(uint32_t code) {
  *
  * This function reboots the device into the BOOTSEL mode ('usb boot").
  *
- * Facilities are provided to enable an "activity light" via GPIO attached LED for the USB Mass Storage Device,
+ * Facilities are provided to enable an "activity light" via GPIO attached LED for the USB Mass Storage device,
  * and to limit the USB interfaces exposed.
  *
  * \param usb_activity_gpio_pin_mask 0 No pins are used as per a cold boot. Otherwise a single bit set indicating which
