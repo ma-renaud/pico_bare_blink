@@ -12,7 +12,7 @@ list(APPEND incLocalVar
 
 # Add specific source to the list
 list(APPEND srcLocalVar
-        ${CMAKE_CURRENT_SOURCE_DIR}/device/raspberrypi/rp2040/src/system_RP2040.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/device/raspberrypi/rp2040/src/system_RP2040.cpp
 )
 
 # Update the project lists
