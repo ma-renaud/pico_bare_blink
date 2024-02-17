@@ -38,13 +38,11 @@ target_compile_options(${PROJECT_NAME} PUBLIC
         ${PROJECT_COMMON_COMPILE_FLAGS}
 )
 
-# Make sure TinyUSB can find tusb_config.h
 target_include_directories(${PROJECT_NAME} PUBLIC
         PRIVATE ${RP2040_CMSIS_INC_DIRECTORIES}
         ${CMAKE_CURRENT_LIST_DIR}/inc
         ${CMAKE_CURRENT_LIST_DIR})
 
-# pull in common dependencies
 target_link_libraries(${PROJECT_NAME}
         ${PROJECT_COMMON_COMPILE_FLAGS}
         -L"${CMAKE_SOURCE_DIR}/linker"
@@ -56,12 +54,25 @@ target_link_libraries(${PROJECT_NAME}
         -Wl,--print-memory-usage
         -Wl,-Map=${PROJECT_NAME}.map)
 
+
+set_target_properties( ${PROJECT_NAME} PROPERTIES SUFFIX ".elf" )
+
 #set the standards use by this target.
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_compile_features(${PROJECT_NAME} PUBLIC c_std_11)
 
-add_compile_options(-Wall
-        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
-        -Wno-unused-function # we have some for the docs that aren't called
-        -Wno-maybe-uninitialized
+#set extra warnings
+target_compile_options(${PROJECT_NAME} PUBLIC -Wunused-parameter -Wextra -Wall)
+
+#set optimization
+if (${CMAKE_BUILD_TYPE} MATCHES Debug)
+  target_compile_options(${PROJECT_NAME} PUBLIC -O0)
+else ()
+  target_compile_options(${PROJECT_NAME} PUBLIC -O3)
+endif ()
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_OBJCOPY} -O ihex ${PROJECT_NAME}.elf  ${PROJECT_NAME}.hex
+        COMMAND ${CMAKE_OBJDUMP} -h -S ${PROJECT_NAME}.elf > ${PROJECT_NAME}.lst
+        COMMAND ${CMAKE_NM_UTIL} -C -r --size-sort -S --print-size ${PROJECT_NAME}.elf > ${PROJECT_NAME}.nm
 )

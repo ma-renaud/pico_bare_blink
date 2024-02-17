@@ -5,7 +5,7 @@
 #define STM32_HANDLERS_OFFSET 16
 
 
-extern "C" void __stack_top(void);
+extern "C" void __StackTop(void);
 
 void reset_handler();
 
@@ -131,9 +131,9 @@ WEAK_FUNC(systick_handler)
 /*
  * ISR vectors.
  */
-void (*isr_vector[])(void) __attribute__ ((used, section (".isr_vectors"))) = {
+void (*isr_vector[])(void) __attribute__ ((used, section (".vectors"))) = {
 
-        __stack_top, /* not a funtion */
+        __StackTop, /* not a funtion */
         reset_handler,                                  // 0x0004
         nmi_handler,                                    // 0x0008
         hardFault_handler,                              // 0x000C
