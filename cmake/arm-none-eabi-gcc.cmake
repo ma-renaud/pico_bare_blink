@@ -6,12 +6,12 @@ set(CMAKE_SYSTEM_PROCESSOR ARM)
 #clear all the CFLags
 set (CMAKE_C_FLAGS "" CACHE STRING "Set C Compiler Flags" FORCE)
 set (CMAKE_C_FLAGS_RELEASE "" CACHE STRING "Set C Compiler Flags" FORCE)
-set (CMAKE_C_FLAGS_DEBUG "" CACHE STRING "Set C Compiler Flags" FORCE)
+set (CMAKE_C_FLAGS_DEBUG "-g " CACHE STRING "Set C Compiler Flags" FORCE)
 
 #clear all the CXXFLags
 set (CMAKE_CXX_FLAGS "" CACHE STRING "Set C++ Compiler Flags" FORCE)
 set (CMAKE_CXX_FLAGS_RELEASE "" CACHE STRING "Set C++ Compiler Flags" FORCE)
-set (CMAKE_CXX_FLAGS_DEBUG "" CACHE STRING "Set C++ Compiler Flags" FORCE)
+set (CMAKE_CXX_FLAGS_DEBUG "-g " CACHE STRING "Set C++ Compiler Flags" FORCE)
 
 #add global compile flags for C and C++
 add_compile_options("-ffunction-sections" "-fdata-sections" "-fno-use-cxa-atexit" "-fno-common" "-fno-exceptions" "-fno-rtti" "-fno-threadsafe-statics" "-fsingle-precision-constant" "-Wdouble-promotion")

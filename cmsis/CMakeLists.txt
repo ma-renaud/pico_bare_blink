@@ -1,3 +1,6 @@
+set(${RP2040_CMSIS_INC_DIRECTORIES} "" CACHE INTERNAL "list of all cmsis directorys to include in project" FORCE)
+set(${RP2040_CMSIS_SOURCES} "" CACHE INTERNAL "list of all cmsis sources to include in project" FORCE)
+
 # Set local variables
 set(srcLocalVar
         ${RP2040_CMSIS_INC_DIRECTORIES}
