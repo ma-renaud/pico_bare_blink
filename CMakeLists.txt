@@ -11,6 +11,7 @@ include(toolchain)
 project(bare_blink C CXX ASM)
 
 add_subdirectory(cmsis)
+add_subdirectory(drivers)
 
 add_executable(${PROJECT_NAME}
         ${RP2040_CMSIS_SOURCES}
@@ -24,13 +25,17 @@ target_compile_options(${PROJECT_NAME} PUBLIC
         ${PROJECT_COMMON_COMPILE_FLAGS}
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+message("cmsis path: ${RP2040_CMSIS_INC_DIRECTORIES}")
+
+target_include_directories(${PROJECT_NAME}
         PRIVATE ${RP2040_CMSIS_INC_DIRECTORIES}
+        PRIVATE ${RP2040_DRIVERS_INC_DIRECTORIES}
         ${CMAKE_CURRENT_LIST_DIR}/inc
         ${CMAKE_CURRENT_LIST_DIR})
 
 target_link_libraries(${PROJECT_NAME}
         ${PROJECT_COMMON_COMPILE_FLAGS}
+        ${RP2040_DRIVERS_SOURCES}
         -L"${CMAKE_SOURCE_DIR}/linker"
         -T"memmap_default.ld"
         -nostartfiles
