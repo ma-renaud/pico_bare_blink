@@ -1,0 +1,38 @@
+Checks: >
+  *,
+  -abseil*,
+  -altera*,
+  -android*,
+  -*-avoid-non-const-global-variables,
+  -boost*,
+  -bugprone-easily-swappable-parameters,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -cppcoreguidelines-macro-usage,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-type-cstyle-cast,
+  -hicpp-no-array-decay,
+  -hicpp-no-assembler,
+  -linuxkernel-*,
+  -llvm*,
+  -modernize*,
+  -objc-*,
+  -performance-no-int-to-ptr,
+  -*-uppercase-literal-suffix,
+  -*-avoid-c-arrays,
+  -*-macro-to-enum,
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
+CheckOptions:
+  - { key: readability-identifier-length.MinimumVariableNameLength,       value: 3 }
+  - { key: readability-identifier-length.MinimumLoopCounterNameLength,    value: 1 }
+  - { key: readability-identifier-naming.EnumCase,                        value: lower_case }
+  - { key: readability-identifier-naming.TypedefCase,                     value: lower_case }
+  - { key: readability-identifier-naming.TypedefSuffix,                   value: '_t' }
+  - { key: readability-identifier-naming.StructCaseCase,                  value: lower_case }
+  - { key: readability-identifier-naming.FunctionCase,                    value: lower_case }
+  - { key: readability-identifier-naming.MacroDefinitionCase,             value: UPPER_CASE }
+  - { key: readability-identifier-naming.VariableCase,                    value: lower_case }
+  - { key: readability-identifier-naming.ParameterCase,                   value: lower_case }
+  - { key: readability-identifier-naming.PointerParameterCase,            value: lower_case }
+  - { key: readability-identifier-naming.GlobalVariableCase,              value: lower_case }

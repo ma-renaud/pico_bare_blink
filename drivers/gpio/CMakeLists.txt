@@ -9,7 +9,7 @@ list(APPEND incLocalVar
 
 # Add specific source to the list
 list(APPEND srcLocalVar
-        ${CMAKE_CURRENT_SOURCE_DIR}/reset.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/gpio.cpp
 )
 
 # Update the project lists
