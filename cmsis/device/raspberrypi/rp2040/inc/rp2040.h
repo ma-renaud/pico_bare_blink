@@ -232,56 +232,85 @@ typedef struct
 
 typedef struct
 {
-  __IO uint32_t CLK_GPOUT0_CTRL;	// off 0x0000
-  __IO uint32_t CLK_GPOUT0_DIV;	// off 0x0004
-  __IO uint32_t CLK_GPOUT0_SELECTED;	// off 0x0008
-  __IO uint32_t CLK_GPOUT1_CTRL;	// off 0x000c
-  __IO uint32_t CLK_GPOUT1_DIV;	// off 0x0010
-  __IO uint32_t CLK_GPOUT1_SELECTED;	// off 0x0014
-  __IO uint32_t CLK_GPOUT2_CTRL;	// off 0x0018
-  __IO uint32_t CLK_GPOUT2_DIV;	// off 0x001c
-  __IO uint32_t CLK_GPOUT2_SELECTED;	// off 0x0020
-  __IO uint32_t CLK_GPOUT3_CTRL;	// off 0x0024
-  __IO uint32_t CLK_GPOUT3_DIV;	// off 0x0028
-  __IO uint32_t CLK_GPOUT3_SELECTED;	// off 0x002c
-  __IO uint32_t CLK_REF_CTRL;	// off 0x0030
-  __IO uint32_t CLK_REF_DIV;	// off 0x0034
-  __IO uint32_t CLK_REF_SELECTED;	// off 0x0038
-  __IO uint32_t CLK_SYS_CTRL;	// off 0x003c
-  __IO uint32_t CLK_SYS_DIV;	// off 0x0040
-  __IO uint32_t CLK_SYS_SELECTED;	// off 0x0044
-  __IO uint32_t CLK_PERI_CTRL;	// off 0x0048
+  __IO uint32_t clk_gpout0_ctrl;
+  __IO uint32_t clk_gpout0_div;
+  __IO uint32_t clk_gpout0_selected;
+  __IO uint32_t clk_gpout1_ctrl;
+  __IO uint32_t clk_gpout1_div;
+  __IO uint32_t clk_gpout1_selected;
+  __IO uint32_t clk_gpout2_ctrl;
+  __IO uint32_t clk_gpout2_div;
+  __IO uint32_t clk_gpout2_selected;
+  __IO uint32_t clk_gpout3_ctrl;
+  __IO uint32_t clk_gpout3_div;
+  __IO uint32_t clk_gpout3_selected;
+  __IO uint32_t clk_ref_ctrl;
+  __IO uint32_t clk_ref_div;
+  __IO uint32_t clk_ref_selected;
+  __IO uint32_t clk_sys_ctrl;
+  __IO uint32_t clk_sys_div;
+  __IO uint32_t clk_sys_selected;
+  __IO uint32_t clk_peri_ctrl;
   __IO uint32_t _pad0;
-  __IO uint32_t CLK_PERI_SELECTED;	// off 0x0050
-  __IO uint32_t CLK_USB_CTRL;	// off 0x0054
-  __IO uint32_t CLK_USB_DIV;	// off 0x0058
-  __IO uint32_t CLK_USB_SELECTED;	// off 0x005c
-  __IO uint32_t CLK_ADC_CTRL;	// off 0x0060
-  __IO uint32_t CLK_ADC_DIV;	// off 0x0064
-  __IO uint32_t CLK_ADC_SELECTED;	// off 0x0068
-  __IO uint32_t CLK_RTC_CTRL;	// off 0x006c
-  __IO uint32_t CLK_RTC_DIV;	// off 0x0070
-  __IO uint32_t CLK_RTC_SELECTED;	// off 0x0074
-  __IO uint32_t CLK_SYS_RESUS_CTRL;	// off 0x0078
-  __IO uint32_t CLK_SYS_RESUS_STATUS;	// off 0x007c
-  __IO uint32_t FC0_REF_KHZ;	// off 0x0080
-  __IO uint32_t FC0_MIN_KHZ;	// off 0x0084
-  __IO uint32_t FC0_MAX_KHZ;	// off 0x0088
-  __IO uint32_t FC0_DELAY;	// off 0x008c
-  __IO uint32_t FC0_INTERVAL;	// off 0x0090
-  __IO uint32_t FC0_SRC;	// off 0x0094
-  __IO uint32_t FC0_STATUS;	// off 0x0098
-  __IO uint32_t FC0_RESULT;	// off 0x009c
-  __IO uint32_t WAKE_EN0;	// off 0x00a0
-  __IO uint32_t WAKE_EN1;	// off 0x00a4
-  __IO uint32_t SLEEP_EN0;	// off 0x00a8
-  __IO uint32_t SLEEP_EN1;	// off 0x00ac
-  __IO uint32_t ENABLED0;	// off 0x00b0
-  __IO uint32_t ENABLED1;	// off 0x00b4
-  __IO uint32_t INTR;	// off 0x00b8
-  __IO uint32_t INTE;	// off 0x00bc
-  __IO uint32_t INTF;	// off 0x00c0
-  __IO uint32_t INTS;	// off 0x00c4
+  __IO uint32_t clk_peri_selected;
+  __IO uint32_t clk_usb_ctrl;
+  __IO uint32_t clk_usb_div;
+  __IO uint32_t clk_usb_selected;
+  __IO uint32_t clk_adc_ctrl;
+  __IO uint32_t clk_adc_div;
+  __IO uint32_t clk_adc_selected;
+  __IO uint32_t clk_rtc_ctrl;
+  __IO uint32_t clk_rtc_div;
+  __IO uint32_t clk_rtc_selected;
+  __IO uint32_t clk_sys_resus_ctrl;
+  __IO uint32_t clk_sys_resus_status;
+  __IO uint32_t fc0_ref_khz;
+  __IO uint32_t fc0_min_khz;
+  __IO uint32_t fc0_max_khz;
+  __IO uint32_t fc0_delay;
+  __IO uint32_t fc0_interval;
+  __IO uint32_t fc0_src;
+  __IO uint32_t fc0_status;
+  __IO uint32_t fc0_result;
+  __IO uint32_t wake_en0;
+  __IO uint32_t wake_en1;
+  __IO uint32_t sleep_en0;
+  __IO uint32_t sleep_en1;
+  __IO uint32_t enabled0;
+  __IO uint32_t enabled1;
+  __IO uint32_t intr;
+  __IO uint32_t inte;
+  __IO uint32_t intf;
+  __IO uint32_t ints;
 } CLOCKS_TypeDef;
+
+
+#define XOSC_BASE 0x40024000
+#define XOSC ((XOSC_TypeDef *) XOSC_BASE)
+
+typedef struct
+{
+    __IO uint32_t ctrl;
+    __IO uint32_t status;
+    __IO uint32_t dormant;
+    __IO uint32_t startup;
+    __IO uint32_t _pad0[3];
+    __IO uint32_t count;
+} XOSC_TypeDef;
+
+
+#define PLL_SYS_BASE 0x40028000
+#define PLL_SYS ((PLL_TypeDef *) PLL_SYS_BASE)
+
+#define PLL_USB_BASE 0x4002c000
+#define PLL_USB ((PLL_TypeDef *) PLL_USB_BASE)
+
+typedef struct
+{
+    __IO uint32_t cs;
+    __IO uint32_t pwr;
+    __IO uint32_t fbdiv_int;
+    __IO uint32_t prim;
+} PLL_TypeDef;
 
 #endif //RP2040_H
