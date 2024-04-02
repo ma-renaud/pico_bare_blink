@@ -3,3 +3,11 @@ BasedOnStyle: LLVM
 AccessModifierOffset: -4
 ColumnLimit: 120
 IndentWidth: 4
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  SplitEmptyFunction: false

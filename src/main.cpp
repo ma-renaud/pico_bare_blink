@@ -82,8 +82,7 @@ void delay(int n) // no particular timing
 }
 
 uint32_t frequency_count_khz(freq_counter_src src) {
-    while ((CLOCKS->fc0_status & CLK_FC0_STATUS_RUNNING_BIT)) {
-    }
+    while ((CLOCKS->fc0_status & CLK_FC0_STATUS_RUNNING_BIT)) {}
 
     CLOCKS->fc0_ref_khz = 12000;
     CLOCKS->fc0_interval = 10;
@@ -91,8 +90,7 @@ uint32_t frequency_count_khz(freq_counter_src src) {
     CLOCKS->fc0_max_khz = 0xffffffff;
     CLOCKS->fc0_src = to_underlying(src);
 
-    while (!(CLOCKS->fc0_status & CLK_FC0_STATUS_DONE_BIT)) {
-    }
+    while (!(CLOCKS->fc0_status & CLK_FC0_STATUS_DONE_BIT)) {}
 
     return CLOCKS->fc0_result >> CLK_FC0_RESULT_LSB;
 }
@@ -127,7 +125,7 @@ void init() {
     XOSC->ctrl = XOSC_CTRL_ENABLE_VALUE_ENABLE << XOSC_CTRL_ENABLE_LSB;
 
     // Wait for XOSC to be stable
-    while ((XOSC->status & XOSC_STATUS_STABLE_BITS) == 0u){}
+    while ((XOSC->status & XOSC_STATUS_STABLE_BITS) == 0u) {}
 
     // Configure clock
     // Set Ref
@@ -138,7 +136,7 @@ void init() {
     PLL_SYS->pwr &= ~(0x21);
 
     // Wait for PLL to lock
-    while ((PLL_SYS->cs & PLL_CS_LOCK_BITS) == 0u){}
+    while ((PLL_SYS->cs & PLL_CS_LOCK_BITS) == 0u) {}
 
     // Set post dividers and turn them on
     PLL_SYS->prim = (6 << PLL_PRIM_POSTDIV1_LSB) | (2 << PLL_PRIM_POSTDIV2_LSB);
