@@ -75,7 +75,7 @@ enum class freq_counter_src : uint8_t {
 void delay(int n) // no particular timing
 {
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < 400; j++) {
+        for (int j = 0; j < 8800; j++) {
             asm volatile("nop");
         }
     }
