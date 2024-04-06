@@ -10,4 +10,5 @@ list(APPEND incLocalVar
 set(RP2040_DRIVERS_INC_DIRECTORIES ${incLocalVar} CACHE INTERNAL "")
 
 add_subdirectory(reset)
+add_subdirectory(clocks)
 add_subdirectory(gpio)
