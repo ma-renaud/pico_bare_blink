@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <algorithm>
+#include "reset.h"
 
 //NOLINTBEGIN(bugprone-reserved-identifier, cert-dcl*, readability-identifier-naming)
 extern std::uintptr_t _rodata_begin;
@@ -21,7 +22,12 @@ void reset_handler()
 {
     init_data();
     init_bss();
-//    init_static_ctor();
+
+    reset(Peripherals::bus_ctrl);
+    reset(Peripherals::io_bank0);
+    reset(Peripherals::pll_sys);
+
+    init_static_ctor();
 
     asm volatile ("bl  main");
 }

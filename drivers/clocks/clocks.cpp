@@ -3,7 +3,7 @@
 #include "utils.h"
 
 // Clocks
-static uint8_t sys_freq_default = 133;
+static constexpr uint8_t sys_freq_default = 133;
 enum class clock_ref : uint8_t {
     rosc = 0,
     aux,
@@ -52,8 +52,6 @@ static constexpr uint8_t gpio_21_function_clock_out = 8;
 static constexpr uint8_t clk_gpio0_ctrl_src_lsb = 5;
 static constexpr uint8_t clk_gpio0_ctrl_enable_lsb = 11;
 static constexpr uint8_t clk_gpio0_div_lsb = 8;
-
-/// SEE: https://www.modernescpp.com/index.php/creational-patterns-singleton/
 
 Clock::Clock() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)) {
     start_xosc();

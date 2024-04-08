@@ -11,6 +11,7 @@ Checks: >
   -cppcoreguidelines-macro-usage,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-cstyle-cast,
+  -fuchsia-statically-constructed-objects,
   -hicpp-no-array-decay,
   -hicpp-no-assembler,
   -linuxkernel-*,

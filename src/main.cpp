@@ -1,11 +1,8 @@
-#include "reset.h"
-#include "rp2040.h"
-#include "utils.h"
 #include "clocks.h"
+#include "rp2040.h"
 
 #define GPIO_FUNC_SIO 5u
 #define LED 25u
-
 
 void delay(int n) // no particular timing
 {
@@ -14,6 +11,10 @@ void delay(int n) // no particular timing
             asm volatile("nop");
         }
     }
+}
+
+namespace {
+Clock clock;
 }
 
 void init();
@@ -26,25 +27,8 @@ int main() {
 }
 
 void init() {
-    reset(Peripherals::bus_ctrl);
-    reset(Peripherals::io_bank0);
-    reset(Peripherals::pll_sys);
 
-    uint32_t freq_khz = Clock::frequency_count_khz(Clock::freq_counter_src::clk_sys);
-    uint32_t freq_mhz = freq_khz / to_underlying(Clock::hertz_units::KHZ);
-    (void)freq_mhz;
-
-    Clock::output_clock_gpio0(Clock::gpout_src::clk_sys);
-
-    Clock clock;
-    uint32_t test = clock.get_sys_freq();
-    clock.set_sys_freq(84);
-    test = clock.get_sys_freq();
-    (void)test;
-
-    freq_khz = Clock::frequency_count_khz(Clock::freq_counter_src::clk_sys);
-    freq_mhz = freq_khz / to_underlying(Clock::hertz_units::KHZ);
-    (void)freq_mhz;
+    [[maybe_unused]] uint32_t sys_freq = clock.get_sys_freq();
 
     // Configure led
     IO_BANK0->gpio25_ctrl = GPIO_FUNC_SIO; // init pin - select function SIO
