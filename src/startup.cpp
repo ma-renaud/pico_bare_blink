@@ -23,9 +23,8 @@ void reset_handler()
     init_data();
     init_bss();
 
-    reset(Peripherals::bus_ctrl);
-    reset(Peripherals::io_bank0);
-    reset(Peripherals::pll_sys);
+    reset::reset(reset::Peripherals::clocks);
+    reset::reset(reset::Peripherals::pll_sys);
 
     init_static_ctor();
 

@@ -1,5 +1,6 @@
 #include "clocks.h"
 #include "rp2040.h"
+#include "reset.h"
 
 #define GPIO_FUNC_SIO 5u
 #define LED 25u
@@ -27,8 +28,15 @@ int main() {
 }
 
 void init() {
+    reset::reset(reset::Peripherals::bus_ctrl);
+    reset::reset(reset::Peripherals::io_bank0);
 
     [[maybe_unused]] uint32_t sys_freq = clock.get_sys_freq();
+    Clock::output_clock_gpio0(Clock::gpout_src::clk_sys);
+
+    clock.set_sys_freq(133);
+
+    sys_freq = clock.get_sys_freq();
 
     // Configure led
     IO_BANK0->gpio25_ctrl = GPIO_FUNC_SIO; // init pin - select function SIO
