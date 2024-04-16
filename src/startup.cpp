@@ -1,8 +1,9 @@
-#include <cstdint>
-#include <algorithm>
+#include "clocks.h"
 #include "reset.h"
+#include <algorithm>
+#include <cstdint>
 
-//NOLINTBEGIN(bugprone-reserved-identifier, cert-dcl*, readability-identifier-naming)
+// NOLINTBEGIN(bugprone-reserved-identifier, cert-dcl*, readability-identifier-naming)
 extern std::uintptr_t _rodata_begin;
 extern std::uintptr_t __data_start__;
 extern std::uintptr_t __data_end__;
@@ -12,14 +13,13 @@ extern std::uintptr_t __bss_end__;
 
 extern void (*__ctors_begin__[])(void);
 extern void (*__ctors_end__[])(void);
-//NOLINTEND(bugprone-reserved-identifier, cert-dcl*, readability-identifier-naming)
+// NOLINTEND(bugprone-reserved-identifier, cert-dcl*, readability-identifier-naming)
 
 void init_data();
 void init_bss();
 void init_static_ctor();
 
-void reset_handler()
-{
+void reset_handler() {
     init_data();
     init_bss();
 
@@ -28,7 +28,10 @@ void reset_handler()
 
     init_static_ctor();
 
-    asm volatile ("bl  main");
+    i_clocks *clock = clocks::get_instance();
+    clock->set_sys_freq(133);
+
+    asm volatile("bl  main");
 }
 
 void init_data() {
@@ -41,7 +44,7 @@ void init_bss() {
 }
 
 void init_static_ctor() {
-    //NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
     const std::size_t cnt = __ctors_end__ - __ctors_begin__;
     for (std::size_t i = 0; i < cnt; i++) {
         __ctors_begin__[i]();

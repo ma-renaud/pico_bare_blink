@@ -60,9 +60,9 @@ static constexpr uint8_t clk_gpio0_ctrl_src_lsb = 5;
 static constexpr uint8_t clk_gpio0_ctrl_enable_lsb = 11;
 static constexpr uint8_t clk_gpio0_div_lsb = 8;
 
-Clock::Clock() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)) {}
+clocks::clocks() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)) {}
 
-[[maybe_unused]] void Clock::set_sys_freq(uint32_t sys_freq_mhz) {
+[[maybe_unused]] void clocks::set_sys_freq(uint32_t sys_freq_mhz) {
     if((XOSC->status & xosc_status_enabled_bit) == 0u) {
         start_xosc();
     }
@@ -71,7 +71,7 @@ Clock::Clock() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)
     clk_sys_freq = sys_freq_mhz * to_underlying(hertz_units::MHZ);
 }
 
-[[maybe_unused]] uint32_t Clock::frequency_count_khz(Clock::freq_counter_src src) {
+[[maybe_unused]] uint32_t clocks::frequency_count_khz(clocks::freq_counter_src src) {
     while ((CLOCKS->fc0_status & clk_fco_status_running_bit) != 0u) {}
 
     CLOCKS->fc0_ref_khz = xosc_freq / to_underlying(hertz_units::KHZ);
@@ -85,13 +85,13 @@ Clock::Clock() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)
     return CLOCKS->fc0_result >> clk_fco_result_khz_lsb;
 }
 
-[[maybe_unused]] void Clock::output_clock_gpio0(Clock::gpout_src src) {    CLOCKS->clk_gpout0_ctrl =
+[[maybe_unused]] void clocks::output_clock_gpio0(clocks::gpout_src src) {    CLOCKS->clk_gpout0_ctrl =
         static_cast<uint32_t>(to_underlying(src) << clk_gpio0_ctrl_src_lsb) | 1u << clk_gpio0_ctrl_enable_lsb;
     CLOCKS->clk_gpout0_div = 1u << clk_gpio0_div_lsb;
     IO_BANK0->gpio21_ctrl = gpio_21_function_clock_out;
 }
 
-[[maybe_unused]] void Clock::reset() {
+[[maybe_unused]] void clocks::reset() {
     CLOCKS->clk_gpout0_ctrl = 0u;
     CLOCKS->clk_sys_ctrl = 0;
     while (CLOCKS->clk_sys_selected != 0x1) {}
@@ -100,7 +100,7 @@ Clock::Clock() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)
     XOSC->ctrl = to_underlying(xosc_status::disable) << xosc_ctrl_enable_lsb;
 }
 
-void Clock::start_xosc() {
+void clocks::start_xosc() {
     XOSC->ctrl = xosc_freq_range_1_15_mhz;
     XOSC->startup = startup_delay;
     XOSC->ctrl = to_underlying(xosc_status::enable) << xosc_ctrl_enable_lsb;
@@ -109,7 +109,7 @@ void Clock::start_xosc() {
     while ((XOSC->status & xosc_status_stable_bit) == 0u) {}
 }
 
-void Clock::conf_pll_clock(uint8_t sys_clock_mhz) {
+void clocks::conf_pll_clock(uint8_t sys_clock_mhz) {
     // Set Ref clock
     CLOCKS->clk_ref_ctrl = to_underlying(clock_ref::xosc);
     while ((CLOCKS->clk_ref_selected & (1u << to_underlying(clock_ref::xosc))) == 0u) {}

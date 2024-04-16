@@ -5,6 +5,7 @@ set(incLocalVar ${RP2040_DRIVERS_INC_DIRECTORIES})
 
 list(APPEND incLocalVar
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
+        ${CMAKE_CURRENT_SOURCE_DIR}/interfaces
 )
 
 set(RP2040_DRIVERS_INC_DIRECTORIES ${incLocalVar} CACHE INTERNAL "")

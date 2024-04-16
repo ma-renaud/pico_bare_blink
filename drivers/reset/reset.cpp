@@ -16,7 +16,7 @@ static inline void unreset_block_wait(uint32_t bits) {
 
 void reset(Peripherals periph) {
     if (periph == Peripherals::clocks) {
-        Clock::reset();
+        clocks::reset();
     } else {
         reset_block(to_underlying(periph));
         unreset_block_wait(to_underlying(periph));
