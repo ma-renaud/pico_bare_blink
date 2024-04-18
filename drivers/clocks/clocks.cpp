@@ -59,6 +59,7 @@ static constexpr uint8_t gpio_21_function_clock_out = 8;
 static constexpr uint8_t clk_gpio0_ctrl_src_lsb = 5;
 static constexpr uint8_t clk_gpio0_ctrl_enable_lsb = 11;
 static constexpr uint8_t clk_gpio0_div_lsb = 8;
+static constexpr uint8_t clk_gpio0_io = 21;
 
 clocks::clocks() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MHZ)) {}
 
@@ -88,7 +89,7 @@ clocks::clocks() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MH
 [[maybe_unused]] void clocks::output_clock_gpio0(clocks::gpout_src src) {    CLOCKS->clk_gpout0_ctrl =
         static_cast<uint32_t>(to_underlying(src) << clk_gpio0_ctrl_src_lsb) | 1u << clk_gpio0_ctrl_enable_lsb;
     CLOCKS->clk_gpout0_div = 1u << clk_gpio0_div_lsb;
-    IO_BANK0->gpio21_ctrl = gpio_21_function_clock_out;
+    IO_BANK0->io[clk_gpio0_io].ctrl = gpio_21_function_clock_out;
 }
 
 [[maybe_unused]] void clocks::reset() {

@@ -1,9 +1,12 @@
 #include "clocks.h"
+#include "gpio.h"
 #include "reset.h"
-#include "rp2040.h"
 
-#define GPIO_FUNC_SIO 5u
-#define LED 25u
+#define LED_IO 25u
+
+namespace {
+gpio led;
+}
 
 void delay(int n) // no particular timing
 {
@@ -31,15 +34,12 @@ void init() {
     [[maybe_unused]] uint32_t sys_freq = clock->get_sys_freq();
 
     // Configure led
-    IO_BANK0->gpio25_ctrl = GPIO_FUNC_SIO; // init pin - select function SIO
-    SIO->gpio_oe_set = 1ul << LED;         // allow setting of output
+    led.init(LED_IO, gpio_mode::GPIO);
 }
 
 void loop() {
     while (true) {
-        SIO->gpio_out_xor = (1ul << LED); // Toggle gpio atomically
+        led.toggle();
         delay(1000);
-        // SIO->gpio_out_clr = (1ul << LED); // turn off gpio atomically
-        // delay(1000);
     }
 }
