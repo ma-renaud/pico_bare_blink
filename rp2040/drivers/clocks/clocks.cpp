@@ -5,6 +5,7 @@
 
 // Clocks
 static constexpr uint8_t sys_freq_default = 6;
+static constexpr uint8_t clk_peri_ctrl_enable_lsb = 11;
 enum class clock_ref : uint8_t {
     rosc = 0,
     aux,
@@ -99,6 +100,7 @@ clocks::clocks() : clk_sys_freq(sys_freq_default * to_underlying(hertz_units::MH
     CLOCKS->clk_ref_ctrl = 0;
     while (CLOCKS->clk_ref_selected != 0x1) {}
     XOSC->ctrl = to_underlying(xosc_status::disable) << xosc_ctrl_enable_lsb;
+    CLOCKS->clk_peri_ctrl |= 1u << clk_peri_ctrl_enable_lsb;
 }
 
 void clocks::start_xosc() {
@@ -129,4 +131,7 @@ void clocks::conf_pll_clock(uint8_t sys_clock_mhz) {
     // Set sys clock to PLL
     CLOCKS->clk_sys_ctrl = to_underlying(clock_src::aux);
     while ((CLOCKS->clk_sys_selected & (1u << to_underlying(clock_src::aux))) == 0u) {}
+
+    // Set peripheral clock = system clock
+    CLOCKS->clk_peri_ctrl |= 1u << clk_peri_ctrl_enable_lsb;
 }

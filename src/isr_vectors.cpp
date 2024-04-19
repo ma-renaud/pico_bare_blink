@@ -2,7 +2,7 @@
 #include "isr_vectors.h"
 #include "core_cm0plus.h"
 
-#define STM32_HANDLERS_OFFSET 16
+#define HANDLERS_OFFSET 16
 
 
 extern "C" void __StackTop(void);
@@ -107,7 +107,7 @@ std::array<std::function<void()>, 32> isrHandlers = {
 };
 
 void ISR() {
-    isrHandlers[getVectNumber() - STM32_HANDLERS_OFFSET]();
+    isrHandlers[getVectNumber() - HANDLERS_OFFSET]();
 }
 
 void registerHandler(IRQn_Type irqn, std::function<void()> &&f) {

@@ -10,13 +10,13 @@ include(toolchain)
 
 project(bare_blink C CXX ASM)
 
-add_subdirectory(cmsis)
-add_subdirectory(drivers)
+add_subdirectory(rp2040/cmsis)
+add_subdirectory(rp2040/drivers)
 
 add_executable(${PROJECT_NAME}
         ${RP2040_CMSIS_SOURCES}
         ${RP2040_DRIVERS_SOURCES}
-        boot2/bs2_default_padded_checksummed.S
+        rp2040/boot2/bs2_default_padded_checksummed.S
         src/isr_vectors.cpp
         src/startup.cpp
         src/main.cpp
